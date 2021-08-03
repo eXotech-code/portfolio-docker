@@ -1,0 +1,60 @@
+services:
+
+  # Reverse proxy for all services
+  reverse-proxy:
+    image: nginx
+    container_name: reverse-proxy
+    depends_on:
+      - react
+      - portend
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    restart: on-failure
+
+  # Frontend website served with Nginx
+  react:
+    image: frontend
+    container_name: frontend
+    build:
+      context: ./frontend
+    depends_on:
+      - portend
+      - db
+    expose:
+      - 8080
+    restart: on-failure
+
+  # Backend service
+  portend:
+    image: portend
+    container_name: portend
+    build:
+      context: ./portend
+    depends_on:
+      - db
+    ports:
+      - 5000
+    restart: on-failure
+    # Environment variables from my shell
+    # will be used here.
+    environment:
+      - DB_USER
+      - DB_PASS
+
+  # Database
+  db:
+    image: db
+    container_name: db
+    volumes:
+      - "~/Documents/database/:/var/lib/mysql"
+    build:
+      context: ./database
+    expose:
+      - 3306
+    restart: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - DB_USER
+      - DB_PASS
