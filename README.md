@@ -3,5 +3,5 @@
 Add two environment variables to your `~/.zshrc` file.
 ```
 export DB_USER="root"
-export DB_PASS="hackerman"
+export DB_PASS="yourpassword"
 ```
