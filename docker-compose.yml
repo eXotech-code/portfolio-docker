@@ -39,7 +39,7 @@ services:
       context: ./portend
     depends_on:
       - db
-    ports:
+    expose:
       - 5000
     restart: on-failure
     # Environment variables from my shell
@@ -56,8 +56,8 @@ services:
       - "~/Documents/database/:/var/lib/mysql"
     build:
       context: ./database
-    expose:
-      - 3306
+    ports:
+      - 3306:3306
     restart: on-failure
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
