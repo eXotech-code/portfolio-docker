@@ -56,7 +56,7 @@ services:
       - "~/Documents/database/:/var/lib/mysql"
     build:
       context: ./database
-    ports:
+    ports: #TODO: Before deployment change to 'EXPOSE'
       - 3306:3306
     restart: on-failure
     environment:
